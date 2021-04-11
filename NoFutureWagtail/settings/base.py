@@ -51,6 +51,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'nofutureyoga@gmail.com'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = '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'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

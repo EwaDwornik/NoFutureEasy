@@ -29,7 +29,7 @@ def contact(request):
             message = "\n".join(body.values())
 
             try:
-                send_mail(subject, message, 'admin@example.com', ['admin@example.com'])
+                send_mail(subject, message, 'nofutureyoga@gmail.com', ['nofutureyoga@gmail.com'])
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
             return HttpResponse('I will contact you soon.')
