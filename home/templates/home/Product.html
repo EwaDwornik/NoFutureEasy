@@ -1,0 +1,140 @@
+{% load wagtailimages_tags %}
+{% load static %}
+{% load static wagtailsettings_tags %}
+{% get_settings %}
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta charset="utf-8"/>
+    <title>No Future</title>
+
+    {# Global stylesheets #}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+            integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+            integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+            crossorigin="anonymous"></script>
+
+
+    {# Global javascript #}
+    <script type="text/javascript" src="{% static 'js/snipcartwagtaildemo.js' %}"></script>
+
+    {# Snipcart #}
+
+    {% if settings.home.SnipcartSettings.api_key %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://cdn.snipcart.com/scripts/2.0/snipcart.js" id="snipcart"
+            data-api-key="{{ settings.home.SnipcartSettings.api_key }}"></script>
+    <link href="https://cdn.snipcart.com/themes/2.0/base/snipcart.min.css" type="text/css" rel="stylesheet"/>
+    {% endif %}
+
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    {# Global stylesheets #}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/NoFutureWagtail.css' %}">
+
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/website/home">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link active" aria-current="page" href="/website/about">About</a>
+                <a class="nav-link" href="/website/contact">Contact</a>
+                <a class="nav-link" href="/website/yoga">Yoga</a>
+                <a class="nav-link" href="/">Shop</a>
+                <a class="nav-link" href="/website/music">Music</a>
+                <a class="nav-link" href="/website/calculators">Calculators</a>
+                <a class="nav-link" href="/website/programming">Programming</a>
+                <a class="nav-link" href="/website/knitting">Knitting</a>
+                <div class="container grid-lg">
+                    <!-- Snipcart summary and View cart button -->
+                    <section class="navbar-section snipcart-summary">
+                        <a href="" class="btn btn-primary snipcart-checkout float-right">
+                            View cart (<span class="snipcart-total-items">0</span>)
+                        </a>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+{% load wagtailimages_tags %}
+
+
+<main class="container2">
+    <div class="left-column">
+        {% image page.image fill-400x600 as temp_image %}
+        <img style="float: right;" src="{{ temp_image.url }}" alt=""/>
+    </div>
+
+    <div class="right-column">
+        <h3>
+            {{ page.title }}
+        </h3>
+
+        <p style="text-align: left">
+            {{ page.short_description }}
+        </p>
+        <p style="text-align: left">
+            Price: {{page.price}}
+        </p>
+
+        <button class="snipcart-add-item btn btn-primary"
+                data-item-name="{{ page.title }}"
+                data-item-id="{{ page.sku }}"
+                data-item-url="{{ page.get_full_url }}"
+                data-item-price="{{ page.price }}"
+                data-item-description="{{ page.short_description}}"
+                data-item-image="{{ temp_image.url }}"
+                {% for f in custom_fields %}
+                data-item-custom{{forloop.counter}}-name="{{f.name}}"
+                data-item-custom{{forloop.counter}}-options="{{f.options}}"
+                {% endfor %}>
+            <i class="icon icon-plus"></i>
+            Add to cart
+        </button>
+<br><br><br><br>
+        <p style="text-align: left">
+            Price for domestic parcel, within Iceland: 1000 ISK<br>
+            Price for international parcel, within Europe: 14€ / 2000 ISK<br>
+            Price for international parcel, outside Europe: 28€ / 4000 ISK
+        </p>
+    </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.custom-field-select').onchange = function(event) {
+            if (event.target.dataset.field) {
+                document.querySelector('.snipcart-add-item')
+                    .dataset['itemCustom' + event.target.dataset.field + 'Value'] = event.target.value;
+            }
+        };
+    },false);
+
+
+
+</script>
+
+
+</html>
