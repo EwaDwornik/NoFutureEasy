@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, CreateView
 from .models import Contact
 from .forms import ContactForm, PrimesForm, Primes2Form, DivisorForm
 from django.urls import reverse_lazy
 from django.http import HttpResponse, request
 from django.views.generic import View, RedirectView, FormView
+from django.core.mail import send_mail, BadHeaderError
 
 
 class HomeView(TemplateView):
@@ -15,14 +16,26 @@ class AboutView(TemplateView):
     template_name = 'about.html'
 
 
-class ContactView(CreateView):
-    model = Contact
-    form_class = ContactForm
-    success_url = reverse_lazy("thanks")
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = "Website Inquiry"
+            body = {
+                'first_name': form.cleaned_data['first_name'],
+                'email': form.cleaned_data['email'],
+                'message': form.cleaned_data['message'],
+            }
+            message = "\n".join(body.values())
 
+            try:
+                send_mail(subject, message, 'admin@example.com', ['admin@example.com'])
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return HttpResponse('I will contact you soon.')
+    form = ContactForm()
+    return render(request, "website/contact_form.html", {'form': form})
 
-def thanks(view):
-    return HttpResponse("Thank you! Will get in touch soon.")
 
 
 class ProgrammingView(TemplateView):

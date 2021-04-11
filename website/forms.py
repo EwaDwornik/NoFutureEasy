@@ -43,14 +43,14 @@ class Primes2Form(forms.Form):
 
         if number2 >= number3:
             raise ValidationError(
-                "Number2 needs to be smaller than number3")
+                "Number 2 needs to be smaller than number3")
         elif number2 < 1 or number3 < 2:
             raise ValidationError(
-                "Number2 needs to be higher than 1 and number3 needs to be greater than 2"
+                "Number 2 needs to be higher than 1 and number3 needs to be greater than 2"
             )
         elif number3 > 10001:
             raise ValidationError(
-                "Number3 needs to be smaller than 10001"
+                "Number 3 needs to be smaller than 10001"
             )
 
 
