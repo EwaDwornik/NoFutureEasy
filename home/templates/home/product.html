@@ -30,6 +30,9 @@
 
     {# Snipcart #}
 
+    <link rel="preconnect" href="https://app.snipcart.com">
+    <link rel="preconnect" href="https://cdn.snipcart.com">
+
     {% if settings.home.SnipcartSettings.api_key %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="https://cdn.snipcart.com/scripts/2.0/snipcart.js" id="snipcart"
@@ -111,7 +114,7 @@
             <i class="icon icon-plus"></i>
             Add to cart
         </button>
-<br><br><br><br>
+        <br><br><br><br>
         <p style="text-align: left">
             Price for domestic parcel, within Iceland: 1000 ISK<br>
             Price for international parcel, within Europe: 14€ / 2000 ISK<br>
@@ -130,6 +133,7 @@
             }
         };
     },false);
+
 
 
 

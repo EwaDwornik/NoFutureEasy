@@ -16,27 +16,8 @@ class AboutView(TemplateView):
     template_name = 'about.html'
 
 
-def contact(request):
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            subject = "Website Inquiry"
-            body = {
-                'first_name': form.cleaned_data['first_name'],
-                'email': form.cleaned_data['email'],
-                'message': form.cleaned_data['message'],
-            }
-            message = "\n".join(body.values())
-
-            try:
-                send_mail(subject, message, 'nofutureyoga@gmail.com', ['nofutureyoga@gmail.com'])
-            except BadHeaderError:
-                return HttpResponse('Invalid header found.')
-            return HttpResponse('I will contact you soon.')
-    form = ContactForm()
-    return render(request, "website/contact_form.html", {'form': form})
-
-
+class ContactView(TemplateView):
+    template_name = 'contact.html'
 
 class ProgrammingView(TemplateView):
     template_name = 'programming.html'
